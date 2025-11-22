@@ -45,6 +45,8 @@ pip install -e ".[dev]"
 
 ```
 context-driven-ai-agents/
+├── assets/
+│   └── sample.pdf              # 공유 리소스: PDF 샘플 파일
 ├── chapter_1/
 │   └── main.py                  # 2단계 파이프라인 (코드 분석 → 보고서 생성)
 ├── chapter_2/
@@ -56,8 +58,7 @@ context-driven-ai-agents/
 │   ├── main.py                  # 3단계 체인 오케스트레이션
 │   ├── step1_summarize.py      # STEP 1: Market Analyst (PDF 요약)
 │   ├── step2_trends.py         # STEP 2: Trend Analyst (트렌드 추출)
-│   ├── step3_email.py          # STEP 3: Documentation Writer (이메일 작성)
-│   └── sample.pdf              # 입력 샘플 파일
+│   └── step3_email.py          # STEP 3: Documentation Writer (이메일 작성)
 ├── chapter_3-2/
 │   ├── main.py                  # Intent Routing 오케스트레이션
 │   ├── router.py               # Intent Classifier (사용자 입력 분류)
@@ -66,6 +67,12 @@ context-driven-ai-agents/
 │   └── module_human.py         # Human 모듈 (상담사 연결, Mock 티켓)
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
+
+### 공유 리소스 (assets/)
+
+**assets/** 디렉토리는 여러 챕터에서 공통으로 사용하는 리소스를 관리합니다:
+- **sample.pdf**: Chapter 3 및 기타 챕터에서 사용하는 PDF 샘플 파일
+- 다른 챕터에서 접근 시: `Path(__file__).parent.parent / "assets" / "파일명"`
 
 ### 챕터 구성
 

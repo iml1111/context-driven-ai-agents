@@ -11,7 +11,7 @@ import step3_email
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-PDF_PATH = Path(__file__).parent / "sample.pdf"
+PDF_PATH = Path(__file__).parent.parent / "assets" / "sample.pdf"
 
 
 # -------- 파일 업로드 --------
