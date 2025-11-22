@@ -76,7 +76,7 @@ context-driven-ai-agents/
 │   └── agent_researcher.py     # Deep Research 에이전트 (웹 검색 리서치)
 ├── chapter_5/
 │   ├── main.py                  # 메모리 관리 실습 오케스트레이션
-│   ├── scenario.py             # 심리 상담 시나리오 (22턴)
+│   ├── scenario.py             # 심리 상담 시나리오 (11턴)
 │   └── counselor.py            # MemoryCounselor 클래스 (요약 기반 메모리)
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
@@ -170,11 +170,11 @@ context-driven-ai-agents/
 - **주제**: LLM의 단기 메모리 관리 - 요약 기반 컨텍스트 압축
 - **파일**:
   - [main.py](chapter_5/main.py) - 메모리 관리 실습 오케스트레이션
-  - [scenario.py](chapter_5/scenario.py) - 심리 상담 시나리오 (22턴)
+  - [scenario.py](chapter_5/scenario.py) - 심리 상담 시나리오 (11턴)
   - [counselor.py](chapter_5/counselor.py) - MemoryCounselor 클래스 (요약 기반 메모리)
 - **학습 목표**:
   - 긴 대화에서 컨텍스트 비대화 문제 이해
-  - 요약 기반 메모리 압축 전략 구현
+  - 요약 기반 메모리 압축 전략 구현 (임계값: 1000 토큰, 최근 2턴 유지)
   - 최근 대화 유지 + 오래된 대화 요약 패턴
   - 토큰 사용량 추적 및 압축 트리거 로직
   - 메모리 테스트로 장기 기억 검증
