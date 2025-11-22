@@ -47,5 +47,3 @@ output_file.write_text(summary, encoding="utf-8")
 
 print("\n" + "=" * 60)
 print("🎉 Planning 패턴 실습 완료!")
-print(f"💾 결과 저장: {output_file}")
-print("=" * 60)
