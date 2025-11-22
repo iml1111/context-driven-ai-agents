@@ -15,9 +15,9 @@ print("\n🧠 상담 챗봇 초기화 중...")
 counselor = MemoryCounselor(
     client=client,
     summary_threshold=1000,  # 1000 토큰 이상 시 요약
-    recent_turns=2,  # 최근 2턴은 원본 유지
+    recent_turns=4,  # 최근 4턴은 원본 유지
 )
-print("✅ 초기화 완료 (임계값: 1000 토큰, 최근 유지: 2턴)")
+print("✅ 초기화 완료 (임계값: 1000 토큰, 최근 유지: 4턴)")
 
 # -------- 상담 시뮬레이션 --------
 print("\n" + "=" * 60)
