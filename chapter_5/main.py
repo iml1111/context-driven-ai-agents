@@ -82,6 +82,3 @@ for i, msg in enumerate(counselor.conversation_history, 1):
     conversation_log += f"\n[{i}] {role}: {msg['content']}\n"
 
 output_file.write_text(conversation_log, encoding="utf-8")
-
-print("\n" + "=" * 60)
-print("🎉 메모리 관리 실습 완료!")
