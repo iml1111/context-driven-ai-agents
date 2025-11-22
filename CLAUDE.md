@@ -74,7 +74,7 @@ context-driven-ai-agents/
 │   ├── agent_clarifier.py      # Clarifier 에이전트 (추가 질문 생성)
 │   ├── agent_rewriter.py       # Rewriter 에이전트 (프롬프트 재작성)
 │   └── agent_researcher.py     # Deep Research 에이전트 (웹 검색 리서치)
-├── chapter_5/
+├── chapter_4-3/
 │   ├── main.py                  # 메모리 관리 실습 오케스트레이션
 │   ├── scenario.py             # 심리 상담 시나리오 (11턴)
 │   └── counselor.py            # MemoryCounselor 클래스 (요약 기반 메모리)
@@ -166,12 +166,12 @@ context-driven-ai-agents/
   - 장기 실행 태스크 처리 (timeout 설정)
   - 매니지드 Planning & Research API 활용
 
-#### Chapter 5: 요약 기반 메모리 관리
+#### Chapter 4-3: 요약 기반 메모리 관리
 - **주제**: LLM의 단기 메모리 관리 - 요약 기반 컨텍스트 압축
 - **파일**:
-  - [main.py](chapter_5/main.py) - 메모리 관리 실습 오케스트레이션
-  - [scenario.py](chapter_5/scenario.py) - 심리 상담 시나리오 (11턴)
-  - [counselor.py](chapter_5/counselor.py) - MemoryCounselor 클래스 (요약 기반 메모리)
+  - [main.py](chapter_4-3/main.py) - 메모리 관리 실습 오케스트레이션
+  - [scenario.py](chapter_4-3/scenario.py) - 심리 상담 시나리오 (11턴)
+  - [counselor.py](chapter_4-3/counselor.py) - MemoryCounselor 클래스 (요약 기반 메모리)
 - **학습 목표**:
   - 긴 대화에서 컨텍스트 비대화 문제 이해
   - 요약 기반 메모리 압축 전략 구현 (임계값: 1000 토큰, 최근 4턴 유지)
@@ -206,8 +206,8 @@ python chapter_4/main.py               # Planning 패턴 실행 (Plan → 실행
 # Chapter 4-2: Deep Research
 python chapter_4-2/main.py             # Deep Research 실행 (Clarification → Rewriting → Research)
 
-# Chapter 5: 요약 기반 메모리 관리
-python chapter_5/main.py               # 메모리 관리 실습 (요약 기반 컨텍스트 압축)
+# Chapter 4-3: 요약 기반 메모리 관리
+python chapter_4-3/main.py             # 메모리 관리 실습 (요약 기반 컨텍스트 압축)
 ```
 
 ### 환경 변수 설정
