@@ -81,7 +81,7 @@ def run(client, user_input, clarifications):
 위 정보를 바탕으로, 리서처가 작업을 완료할 수 있는 상세한 지침을 작성해주세요."""
 
     response = client.responses.create(
-        model="gpt-4.1",
+        model="gpt-5.1",
         instructions=SYSTEM_PROMPT,
         input=[
             {

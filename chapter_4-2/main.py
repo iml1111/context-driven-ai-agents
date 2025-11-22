@@ -50,7 +50,6 @@ print(enriched_prompt)
 # -------- STEP 3: Deep Research 수행 (Researcher) --------
 print("\n" + "=" * 60)
 print("🌐 STEP 3: Deep Research 수행 중...")
-print("(o4-mini-deep-research 사용 - 수 분 소요 예상)")
 response = agent_researcher.run(client, enriched_prompt)
 print("✅ 리서치 완료")
 
@@ -64,5 +63,3 @@ output_file.write_text(response.output_text, encoding="utf-8")
 
 print("\n" + "=" * 60)
 print("🎉 Deep Research 실습 완료!")
-print(f"💾 결과 저장: {output_file}")
-print("=" * 60)

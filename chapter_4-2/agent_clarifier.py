@@ -40,7 +40,7 @@ def run(client, user_input):
         str: 추가 질문 텍스트 (불릿 리스트)
     """
     response = client.responses.create(
-        model="gpt-4.1",
+        model="gpt-5.1",
         instructions=SYSTEM_PROMPT,
         input=[
             {
