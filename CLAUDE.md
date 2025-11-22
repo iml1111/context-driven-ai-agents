@@ -52,6 +52,12 @@ context-driven-ai-agents/
 │   ├── exercise1_after.py      # 실습#1 After: 회의 메모 분석 (구조화 + Pydantic 검증)
 │   ├── exercise2_before.py     # 실습#2 Before: ROAS 계산 (단순 프롬프트)
 │   └── exercise2_after.py      # 실습#2 After: ROAS 계산 (CoT + Self-Consistency)
+├── chapter_3/
+│   ├── main.py                  # 3단계 체인 오케스트레이션
+│   ├── step1_summarize.py      # STEP 1: Market Analyst (PDF 요약)
+│   ├── step2_trends.py         # STEP 2: Trend Analyst (트렌드 추출)
+│   ├── step3_email.py          # STEP 3: Documentation Writer (이메일 작성)
+│   └── sample.pdf              # 입력 샘플 파일
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -78,6 +84,20 @@ context-driven-ai-agents/
   - 스키마 검증으로 출력 품질 보장
   - 다수결 패턴으로 일관성 향상
 
+#### Chapter 3: Prompt Chaining
+- **주제**: 3단계 프롬프트 체인 구현 (PDF → 요약 → 트렌드 → 이메일)
+- **파일**:
+  - [main.py](chapter_3/main.py) - 전체 체인 오케스트레이션
+  - [step1_summarize.py](chapter_3/step1_summarize.py) - Market Analyst 역할
+  - [step2_trends.py](chapter_3/step2_trends.py) - Trend Analyst 역할
+  - [step3_email.py](chapter_3/step3_email.py) - Documentation Writer 역할
+- **학습 목표**:
+  - Prompt Chaining 패턴 이해
+  - 단계별 출력 → 입력 연결 구조
+  - OpenAI Responses API 사용법
+  - Files API로 PDF 처리
+  - 역할별 프롬프트 설계
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -92,6 +112,9 @@ python chapter_2/exercise1_after.py    # After: 구조화 + 검증
 # Chapter 2: 실습 #2 (ROAS 계산)
 python chapter_2/exercise2_before.py   # Before: 단순 프롬프트
 python chapter_2/exercise2_after.py    # After: CoT + Self-Consistency
+
+# Chapter 3: Prompt Chaining
+python chapter_3/main.py               # 3단계 체인 실행 (PDF → 요약 → 트렌드 → 이메일)
 ```
 
 ### 환경 변수 설정
@@ -211,6 +234,42 @@ python scripts/experiment_name.py
 - 각 개념은 **독립적인 예제**로 실습 가능해야 함
 - 프로덕션 배포는 고려하되, **학습 목적이 최우선**
 - **챕터 간 코드 공유보다 각 챕터의 독립성을 우선**
+
+## 문서 동기화 규칙
+
+이 CLAUDE.md 파일은 프로젝트의 **단일 진실 공급원(Single Source of Truth)**입니다.
+코드 변경 시 반드시 이 문서를 함께 업데이트해야 합니다.
+
+### 동기화가 필요한 경우
+
+#### 1. 새 챕터 추가 시
+- [ ] **프로젝트 구조** 섹션: 디렉토리 트리에 새 챕터 폴더 추가
+- [ ] **챕터 구성** 섹션: 새 챕터 설명 추가 (주제, 파일, 학습 목표)
+- [ ] **개발 명령어** 섹션: 실행 명령어 추가
+
+#### 2. 파일 추가/삭제 시
+- [ ] **프로젝트 구조** 섹션: 파일 트리 업데이트
+- [ ] **챕터 구성** 섹션: 파일 링크 및 설명 업데이트
+
+#### 3. 실행 방식 변경 시
+- [ ] **개발 명령어** 섹션: 명령어 업데이트
+- [ ] **환경 설정** 섹션: 의존성 변경 시 반영
+
+#### 4. 아키텍처 패턴 변경 시
+- [ ] **아키텍처 설계 가이드** 섹션: 새로운 패턴 문서화
+- [ ] **코딩 규칙** 섹션: 규칙 변경 사항 반영
+
+### 동기화 체크리스트 예시
+
+**새 챕터 추가 시**:
+```bash
+# 1. 코드 구현
+# 2. CLAUDE.md 업데이트 (위 4개 섹션)
+# 3. git commit -m "Add Chapter X: [주제]" (코드 + CLAUDE.md 함께 커밋)
+```
+
+**중요**: CLAUDE.md 업데이트 없이 코드만 커밋하지 마세요.
+문서와 코드는 항상 동기화 상태를 유지해야 합니다.
 
 ## 추가 리소스
 
