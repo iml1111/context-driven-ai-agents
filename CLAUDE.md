@@ -58,6 +58,12 @@ context-driven-ai-agents/
 │   ├── step2_trends.py         # STEP 2: Trend Analyst (트렌드 추출)
 │   ├── step3_email.py          # STEP 3: Documentation Writer (이메일 작성)
 │   └── sample.pdf              # 입력 샘플 파일
+├── chapter_4/
+│   ├── main.py                  # Intent Routing 오케스트레이션
+│   ├── router.py               # Intent Classifier (사용자 입력 분류)
+│   ├── module_faq.py           # FAQ 모듈 (제품 관련 질문 답변)
+│   ├── module_order.py         # Order 모듈 (주문 조회, Mock DB)
+│   └── module_human.py         # Human 모듈 (상담사 연결, Mock 티켓)
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -98,6 +104,21 @@ context-driven-ai-agents/
   - Files API로 PDF 처리
   - 역할별 프롬프트 설계
 
+#### Chapter 4: Intent Routing
+- **주제**: 사용자 입력 분류 및 조건부 라우팅 (Intent → FAQ/Order/Human)
+- **파일**:
+  - [main.py](chapter_4/main.py) - Intent Routing 오케스트레이션
+  - [router.py](chapter_4/router.py) - Intent Classifier (사용자 입력 분류)
+  - [module_faq.py](chapter_4/module_faq.py) - FAQ 모듈 (제품 질문 답변)
+  - [module_order.py](chapter_4/module_order.py) - Order 모듈 (주문 조회, Mock DB)
+  - [module_human.py](chapter_4/module_human.py) - Human 모듈 (상담사 연결, Mock 티켓)
+- **학습 목표**:
+  - Intent Routing 패턴 이해
+  - 조건부 분기 구현 (`in` 연산자로 안전한 체크)
+  - Mock 함수로 외부 시스템 시뮬레이션
+  - 모듈별 역할 분리 설계
+  - 3개 시나리오 테스트 (FAQ, Order, Human)
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -115,6 +136,9 @@ python chapter_2/exercise2_after.py    # After: CoT + Self-Consistency
 
 # Chapter 3: Prompt Chaining
 python chapter_3/main.py               # 3단계 체인 실행 (PDF → 요약 → 트렌드 → 이메일)
+
+# Chapter 4: Intent Routing
+python chapter_4/main.py               # Intent Routing 실행 (3개 시나리오 테스트)
 ```
 
 ### 환경 변수 설정
