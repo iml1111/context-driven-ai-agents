@@ -33,7 +33,7 @@ Compute the ROAS for this month's campaign and give the answer.
 """
 
 resp = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-5.1",
     messages=[
         {"role": "user", "content": PROMPT_BEFORE + "\n\n" + CAMPAIGN_BRIEF},
     ],

@@ -46,7 +46,7 @@ Analyze this Python code and report issues as JSON.
 """
 
 logic_resp = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-5.1",
     messages=[
         {"role": "system", "content": logic_system},
         {"role": "user", "content": logic_user},
@@ -80,7 +80,7 @@ fmt_user = f"""
 """
 
 fmt_resp = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-5.1",
     messages=[
         {"role": "system", "content": fmt_system},
         {"role": "user", "content": fmt_user},

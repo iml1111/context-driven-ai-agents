@@ -50,7 +50,7 @@ Problem:
 def generate_candidate():
     """단일 후보 솔루션 생성"""
     resp = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5.1",
         messages=[{"role": "user", "content": GENERATOR_PROMPT}],
     )
     return resp.choices[0].message.content.strip()
@@ -90,7 +90,7 @@ Candidates:
 print("\n🔍 2단계: 다수결 집계 중...")
 
 resp = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-5.1",
     response_format={"type": "json_object"},
     messages=[{"role": "user", "content": AGGREGATOR_PROMPT}],
 )

@@ -78,6 +78,11 @@ context-driven-ai-agents/
 │   ├── main.py                  # 메모리 관리 실습 오케스트레이션
 │   ├── scenario.py             # 심리 상담 시나리오 (11턴)
 │   └── counselor.py            # MemoryCounselor 클래스 (요약 기반 메모리)
+├── chapter_5-1/
+│   ├── agent_producer.py       # Producer 에이전트 (블로그 글 생성/개선)
+│   ├── agent_critic.py         # Critic 에이전트 (점수 기반 평가)
+│   ├── single_pass.py          # 단일 루프 모드 (1회 Reflection)
+│   └── iterative.py            # 반복 루프 모드 (최대 3회)
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -179,6 +184,20 @@ context-driven-ai-agents/
   - 토큰 사용량 추적 및 압축 트리거 로직
   - 메모리 테스트로 장기 기억 검증
 
+#### Chapter 5-1: Reflection Pattern (단일/반복 루프)
+- **주제**: Generate → Critique → Refine 패턴의 두 가지 운용 방식
+- **파일**:
+  - [agent_producer.py](chapter_5-1/agent_producer.py) - Producer 에이전트 (블로그 글 생성/개선)
+  - [agent_critic.py](chapter_5-1/agent_critic.py) - Critic 에이전트 (점수 기반 평가)
+  - [single_pass.py](chapter_5-1/single_pass.py) - 단일 루프 모드 (1회 Reflection)
+  - [iterative.py](chapter_5-1/iterative.py) - 반복 루프 모드 (최대 3회)
+- **학습 목표**:
+  - Reflection 패턴의 두 가지 운용 방식 이해
+  - 단일 vs 반복 루프의 품질·비용·지연 트레이드오프 체감
+  - 점수 기반 평가 및 종료 조건 설계
+  - 상태 관리와 점진적 개선 프로세스
+  - Producer-Critic 에이전트 협업 패턴
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -208,6 +227,10 @@ python chapter_4-2/main.py             # Deep Research 실행 (Clarification →
 
 # Chapter 4-3: 요약 기반 메모리 관리
 python chapter_4-3/main.py             # 메모리 관리 실습 (요약 기반 컨텍스트 압축)
+
+# Chapter 5-1: Reflection Pattern
+python chapter_5-1/single_pass.py      # 단일 루프 (1회 Reflection)
+python chapter_5-1/iterative.py        # 반복 루프 (최대 3회)
 ```
 
 ### 환경 변수 설정
