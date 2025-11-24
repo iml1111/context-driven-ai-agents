@@ -83,6 +83,13 @@ context-driven-ai-agents/
 │   ├── agent_critic.py         # Critic 에이전트 (점수 기반 평가)
 │   ├── single_pass.py          # 단일 루프 모드 (1회 Reflection)
 │   └── iterative.py            # 반복 루프 모드 (최대 3회)
+├── chapter_5-2/
+│   ├── main.py                 # Learning & Adaptation 오케스트레이션
+│   ├── playbook.py             # 플레이북 데이터 구조 및 관리
+│   ├── scenario.py             # 5개 Mock 태스크 (수학/재무 계산)
+│   ├── agent_generator.py      # Generator 에이전트 (플레이북 사용)
+│   ├── agent_reflector.py      # Reflector 에이전트 (인사이트 추출)
+│   └── agent_curator.py        # Curator 에이전트 (플레이북 업데이트)
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -198,6 +205,22 @@ context-driven-ai-agents/
   - 상태 관리와 점진적 개선 프로세스
   - Producer-Critic 에이전트 협업 패턴
 
+#### Chapter 5-2: Learning & Adaptation Pattern
+- **주제**: ACE (Agentic Context Engineering) 단순화 버전 - 2-Epoch 학습을 통한 성능 향상 시연
+- **파일**:
+  - [main.py](chapter_5-2/main.py) - 2-Epoch 오케스트레이션 (학습 모드 → 평가 모드)
+  - [playbook.py](chapter_5-2/playbook.py) - 플레이북 데이터 구조 및 관리
+  - [scenario.py](chapter_5-2/scenario.py) - 5개 Mock 태스크 (수학/재무 계산)
+  - [agent_generator.py](chapter_5-2/agent_generator.py) - Generator 에이전트 (플레이북 사용)
+  - [agent_reflector.py](chapter_5-2/agent_reflector.py) - Reflector 에이전트 (인사이트 추출)
+  - [agent_curator.py](chapter_5-2/agent_curator.py) - Curator 에이전트 (플레이북 업데이트)
+- **학습 목표**:
+  - ACE의 Learning & Adaptation 메커니즘 이해
+  - Generator → Reflector → Curator 3-에이전트 워크플로우
+  - 구조화된 플레이북 (itemized bullets) 진화 과정
+  - 2-Epoch 구조: EPOCH 1 (학습) → EPOCH 2 (평가) → Before/After 성능 비교
+  - Reflection Pattern과의 차이점 (단일 콘텐츠 개선 vs 재사용 가능한 지식 축적)
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -231,6 +254,9 @@ python chapter_4-3/main.py             # 메모리 관리 실습 (요약 기반 
 # Chapter 5-1: Reflection Pattern
 python chapter_5-1/single_pass.py      # 단일 루프 (1회 Reflection)
 python chapter_5-1/iterative.py        # 반복 루프 (최대 3회)
+
+# Chapter 5-2: Learning & Adaptation Pattern
+python chapter_5-2/main.py             # ACE 단순화 버전 (멀티 태스크 학습)
 ```
 
 ### 환경 변수 설정
