@@ -60,8 +60,11 @@ context-driven-ai-agents/
 │   ├── step2_trends.py         # STEP 2: Trend Analyst (트렌드 추출)
 │   └── step3_email.py          # STEP 3: Documentation Writer (이메일 작성)
 ├── chapter_3-2/
-│   ├── main.py                  # Intent Routing 오케스트레이션
-│   ├── router.py               # Intent Classifier (사용자 입력 분류)
+│   ├── main.py                  # Intent Routing 오케스트레이션 (3가지 router 비교 모드)
+│   ├── router.py               # Intent Classifier (기존, 참고용)
+│   ├── router_llm.py           # LLM-based Router (GPT-5.1)
+│   ├── router_rule.py          # Rule-based Router (Keyword/Regex)
+│   ├── router_semantic.py      # Semantic Router (Embedding 유사도)
 │   ├── module_faq.py           # FAQ 모듈 (제품 관련 질문 답변)
 │   ├── module_order.py         # Order 모듈 (주문 조회, Mock DB)
 │   └── module_human.py         # Human 모듈 (상담사 연결, Mock 티켓)
@@ -136,20 +139,22 @@ context-driven-ai-agents/
   - Files API로 PDF 처리
   - 역할별 프롬프트 설계
 
-#### Chapter 3-2: Intent Routing
-- **주제**: 사용자 입력 분류 및 조건부 라우팅 (Intent → FAQ/Order/Human)
+#### Chapter 3-2: Intent Routing - 다중 Router 방식 비교
+- **주제**: 동일한 Intent Routing 문제를 3가지 다른 방식으로 구현하여 비교
 - **파일**:
-  - [main.py](chapter_3-2/main.py) - Intent Routing 오케스트레이션
-  - [router.py](chapter_3-2/router.py) - Intent Classifier (사용자 입력 분류)
+  - [main.py](chapter_3-2/main.py) - 3가지 Router 비교 오케스트레이션
+  - [router_llm.py](chapter_3-2/router_llm.py) - LLM-based Router (GPT-5.1)
+  - [router_rule.py](chapter_3-2/router_rule.py) - Rule-based Router (Keyword/Regex)
+  - [router_semantic.py](chapter_3-2/router_semantic.py) - Semantic Router (Embedding 유사도)
   - [module_faq.py](chapter_3-2/module_faq.py) - FAQ 모듈 (제품 질문 답변)
   - [module_order.py](chapter_3-2/module_order.py) - Order 모듈 (주문 조회, Mock DB)
   - [module_human.py](chapter_3-2/module_human.py) - Human 모듈 (상담사 연결, Mock 티켓)
 - **학습 목표**:
-  - Intent Routing 패턴 이해
-  - 조건부 분기 구현 (`in` 연산자로 안전한 체크)
-  - Mock 함수로 외부 시스템 시뮬레이션
-  - 모듈별 역할 분리 설계
-  - 3개 시나리오 테스트 (FAQ, Order, Human)
+  - **3가지 Routing 방식 비교**: LLM-based, Rule-based, Semantic Similarity
+  - **Trade-off 체험**: 속도 vs 비용 vs 정확도 vs 유연성 균형점 이해
+  - **실무 선택 기준**: 각 방식의 장단점과 적합한 사용 사례 파악
+  - **성능 메트릭 측정**: 응답 시간, API 비용, 분류 일치도 비교
+  - **동일 입력에 대한 결과 비교**: 3가지 방식이 같은/다른 결과를 내는 경우 분석
 
 #### Chapter 4: Planning 패턴
 - **주제**: "Plan → 실행" 2단계 에이전트 협업 (Planner → Writer)
@@ -239,8 +244,8 @@ python chapter_2/exercise2_after.py    # After: CoT + Self-Consistency
 # Chapter 3: Prompt Chaining
 python chapter_3/main.py               # 3단계 체인 실행 (PDF → 요약 → 트렌드 → 이메일)
 
-# Chapter 3-2: Intent Routing
-python chapter_3-2/main.py             # Intent Routing 실행 (3개 시나리오 테스트)
+# Chapter 3-2: Intent Routing - 다중 Router 방식 비교
+python chapter_3-2/main.py             # 3가지 Router 비교 (LLM/Rule/Semantic + 성능 측정)
 
 # Chapter 4: Planning 패턴
 python chapter_4/main.py               # Planning 패턴 실행 (Plan → 실행)
