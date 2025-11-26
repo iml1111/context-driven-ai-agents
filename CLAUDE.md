@@ -96,6 +96,9 @@ context-driven-ai-agents/
 ├── chapter_7-1/
 │   ├── main.py                 # Tool Loop 오케스트레이션 (여행 도우미)
 │   └── tools.py                # Tool 정의 + Mock 데이터 (날씨/환율)
+├── chapter_7-2/
+│   ├── main.py                 # Tool 통합 오케스트레이션 (BTC 투자 도우미)
+│   └── tools.py                # 통합 Tool 정의 + 빗썸 API 호출
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -241,6 +244,18 @@ context-driven-ai-agents/
   - **Multi-tool 호출**: 단일 요청에서 여러 도구 동시 호출 처리
 - **Mock 데이터**: 서울, 도쿄, 상하이 (날씨 + 환율)
 
+#### Chapter 7-2: Tool 통합 - BTC 투자 도우미
+- **주제**: 도구에서 생성되는 과도한 컨텍스트 방지 - Tool 통합 패턴
+- **파일**:
+  - [main.py](chapter_7-2/main.py) - Tool 통합 오케스트레이션 (테스트 시나리오 3개)
+  - [tools.py](chapter_7-2/tools.py) - 통합 Tool 정의 + 빗썸 API 호출
+- **학습 목표**:
+  - **Tool 통합 패턴**: 관련 API들을 action 파라미터로 그룹화
+  - **READ/WRITE 분리**: 조회(get_btc_info)와 실행(execute_btc_order) 분리 (SRP 원칙)
+  - **실제 API 호출**: 빗썸 공개 API (가격, 캔들)
+  - **컨텍스트 최적화**: 도구 수 최소화로 LLM 선택 부담 감소
+- **API**: 빗썸 공개 API (KRW-BTC 가격/캔들) + Mock 주문
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -280,6 +295,9 @@ python chapter_5-2/main.py             # ACE 단순화 버전 (멀티 태스크 
 
 # Chapter 7-1: Tool 컨셉 - 여행 준비 도우미
 python chapter_7-1/main.py             # Tool Loop (날씨/환율 조회 에이전트)
+
+# Chapter 7-2: Tool 통합 - BTC 투자 도우미
+python chapter_7-2/main.py             # Tool 통합 (빗썸 API + Mock 주문)
 ```
 
 ### 환경 변수 설정
