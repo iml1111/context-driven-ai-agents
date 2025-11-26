@@ -93,6 +93,9 @@ context-driven-ai-agents/
 │   ├── agent_generator.py      # Generator 에이전트 (플레이북 사용)
 │   ├── agent_reflector.py      # Reflector 에이전트 (인사이트 추출)
 │   └── agent_curator.py        # Curator 에이전트 (플레이북 업데이트)
+├── chapter_7-1/
+│   ├── main.py                 # Tool Loop 오케스트레이션 (여행 도우미)
+│   └── tools.py                # Tool 정의 + Mock 데이터 (날씨/환율)
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -226,6 +229,18 @@ context-driven-ai-agents/
   - 2-Epoch 구조: EPOCH 1 (학습) → EPOCH 2 (평가) → Before/After 성능 비교
   - Reflection Pattern과의 차이점 (단일 콘텐츠 개선 vs 재사용 가능한 지식 축적)
 
+#### Chapter 7-1: Tool 컨셉 - 여행 준비 도우미
+- **주제**: OpenAI Function Calling(Tools) API를 활용한 에이전트 구현
+- **파일**:
+  - [main.py](chapter_7-1/main.py) - Tool Loop 오케스트레이션 (테스트 시나리오 3개)
+  - [tools.py](chapter_7-1/tools.py) - Tool 정의 + Mock 데이터 (날씨/환율)
+- **학습 목표**:
+  - **Tool Definition**: JSON Schema 기반 도구 정의 방법
+  - **LLM 의사결정**: LLM이 스스로 어떤 도구를 호출할지 판단
+  - **Tool Execution Loop**: tool_calls → 실행 → 결과 전달 → 최종 응답 흐름
+  - **Multi-tool 호출**: 단일 요청에서 여러 도구 동시 호출 처리
+- **Mock 데이터**: 서울, 도쿄, 상하이 (날씨 + 환율)
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -262,6 +277,9 @@ python chapter_5-1/iterative.py        # 반복 루프 (최대 3회)
 
 # Chapter 5-2: Learning & Adaptation Pattern
 python chapter_5-2/main.py             # ACE 단순화 버전 (멀티 태스크 학습)
+
+# Chapter 7-1: Tool 컨셉 - 여행 준비 도우미
+python chapter_7-1/main.py             # Tool Loop (날씨/환율 조회 에이전트)
 ```
 
 ### 환경 변수 설정
