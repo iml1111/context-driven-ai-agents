@@ -111,6 +111,19 @@ context-driven-ai-agents/
 │   ├── server.py               # Mock Calendar MCP Server (FastMCP + SSE)
 │   ├── main.py                 # Calendar Agent (MCP Client + Function Calling)
 │   └── requirements.txt        # 의존성 (mcp, openai)
+├── chapter_10/
+│   ├── main.py                 # Supervisor Tool Loop 오케스트레이션
+│   ├── tools.py                # 5개 Tool 정의 + execute_tool() 라우팅
+│   ├── agent_pm.py             # PM Agent: 요구사항 추출 (web_search)
+│   ├── agent_designer.py       # Designer Agent: UI/UX 기획 (web_search)
+│   ├── agent_architect.py      # Architect Agent: 코드 생성
+│   ├── agent_tester.py         # Tester Agent: LLM 기반 동적 E2E 테스트
+│   └── output/                 # 생성된 산출물 저장
+│       ├── requirements.md
+│       ├── design_spec.md
+│       ├── app.html
+│       ├── test_report.md
+│       └── README.md
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -320,6 +333,44 @@ context-driven-ai-agents/
   - `delete_event`: 일정 삭제
 - **Mock 데이터**: 4개 초기 일정 (팀 회의, 점심 약속, 프로젝트 마감, 치과 예약)
 
+#### Chapter 10: Multi-Agent Collaboration - AI Development Team
+- **주제**: Supervisor 패턴 기반 멀티 에이전트 협업 시스템 - 범용 웹앱 자동 설계/개발/테스트
+- **파일**:
+  - [main.py](chapter_10/main.py) - Supervisor Tool Loop 오케스트레이션
+  - [tools.py](chapter_10/tools.py) - 5개 Tool 정의 + execute_tool() 라우팅
+  - [agent_pm.py](chapter_10/agent_pm.py) - PM Agent (요구사항 추출, web_search)
+  - [agent_designer.py](chapter_10/agent_designer.py) - Designer Agent (UI/UX 기획, web_search)
+  - [agent_architect.py](chapter_10/agent_architect.py) - Architect Agent (코드 생성)
+  - [agent_tester.py](chapter_10/agent_tester.py) - Tester Agent (LLM 기반 동적 E2E 테스트)
+- **학습 목표**:
+  - **Supervisor 패턴**: 중앙 집중식 에이전트 조율 방식 이해
+  - **자율 문제 해결 루프**: Supervisor가 자율적으로 재시도 여부 판단
+  - **Function Calling 확장**: 서브 에이전트를 Tool로 표현하는 패턴
+  - **Web Search 통합**: Responses API + `tools=[{"type": "web_search"}]` 활용
+  - **동적 E2E 테스트**: LLM이 요구사항 기반으로 테스트 계획 생성 → Playwright 실행
+  - **산출물 관리**: 멀티 에이전트 협업의 결과물 체계적 저장
+- **에이전트 구성**:
+  - PM (Supervisor): 요구사항 추출 (web_search), 워크플로우 조율, README 작성
+  - Designer: 모던 UI/UX 디자인 기획서 작성 (web_search로 트렌드 탐색)
+  - Architect: 바닐라 JS/HTML/CSS 코드 생성 + 버그 수정
+  - Tester: LLM이 요구사항 분석 → 동적 테스트 계획 생성 → Playwright 실행
+- **워크플로우**:
+  ```
+  User → PM(요구사항) → Designer(기획) → Architect(코드)
+                            ↑              ↑
+                            └──────────────┴── Supervisor 자율 재호출
+                                               ↓
+                                    Tester(동적 E2E) → 실패 시 request_fix
+                                               ↓
+                                    PM(README) → User
+  ```
+- **핵심 설계 결정**:
+  - **범용성**: 어떤 요구사항이든 처리 가능 (TODO 앱, 계산기, 갤러리 등)
+  - **동적 테스트**: 하드코딩된 테스트 대신 LLM이 요구사항 기반 테스트 생성
+  - **2000자 제한**: PM/Designer 출력물은 2000자 이내로 간결하게
+  - **Supervisor 자율성**: 강제 재시도 로직 없이 Supervisor가 판단
+- **의존성**: `pip install playwright && playwright install chromium`
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -375,6 +426,14 @@ python chapter_9-1/main.py             # MCP 연동 대화형 루프 (GITHUB_REP
 python chapter_9-2/server.py           # FastMCP 서버 (http://localhost:8000/sse)
 # 터미널 2: Agent 실행
 python chapter_9-2/main.py             # MCP Client + Function Calling + CLI 루프
+
+# Chapter 10: Multi-Agent Collaboration - AI Development Team
+# 의존성 설치 (최초 1회)
+pip install playwright && playwright install chromium
+# 실행
+python chapter_10/main.py              # Supervisor 패턴 멀티 에이전트 (범용 웹앱 자동 생성)
+# 결과물 확인
+open chapter_10/output/app.html        # 생성된 웹앱 실행
 ```
 
 ### 환경 변수 설정
