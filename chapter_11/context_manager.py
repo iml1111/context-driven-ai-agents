@@ -113,7 +113,6 @@ class ContextManager:
             new_content = self._summarize_main(new_content)
 
         path.write_text(new_content, encoding="utf-8")
-        print(f"  📝 [Main Context] {message.role.value} 발언 기록됨")
 
     def write_main_header(self) -> None:
         """토론 히스토리 헤더 작성 (초기화)"""
