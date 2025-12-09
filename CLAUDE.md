@@ -124,6 +124,22 @@ context-driven-ai-agents/
 │       ├── app.html
 │       ├── test_report.md
 │       └── README.md
+├── chapter_11/
+│   ├── main.py                 # CLI Entry Point + 데모 시나리오
+│   ├── protocol.py             # A2A 영감: Message, Part, AgentCard, AgentRole 정의
+│   ├── base_agent.py           # BaseAgent ABC (추상 기반 클래스)
+│   ├── context_manager.py      # ContextManager: .md 파일 I/O + 요약
+│   ├── orchestrator.py         # DebateOrchestrator: State Machine
+│   ├── agent_judge.py          # JudgeAgent: 토론 조율, 평가, 최종 판정
+│   ├── agent_debater.py        # DebaterAgent: 주장 전개, web_search 사용
+│   ├── factory.py              # 에이전트/오케스트레이터 팩토리 함수
+│   ├── memory/                 # 런타임 생성 .md 파일 (gitignore)
+│   │   ├── debate_history.md   # 메인 공유 컨텍스트
+│   │   ├── judge_context.md    # 판사 비공개 메모
+│   │   ├── debater_pro_context.md  # PRO 전략 메모
+│   │   └── debater_con_context.md  # CON 전략 메모
+│   └── output/
+│       └── debate_summary.md   # 최종 판정 결과
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -371,6 +387,46 @@ context-driven-ai-agents/
   - **Supervisor 자율성**: 강제 재시도 로직 없이 Supervisor가 판단
 - **의존성**: `pip install playwright && playwright install chromium`
 
+#### Chapter 11: Agentic Debate System (에이전틱 토론 시스템)
+- **주제**: A2A 프로토콜 영감의 멀티 에이전트 토론 시스템 - 확장 가능한 클래스 기반 아키텍처
+- **파일**:
+  - [main.py](chapter_11/main.py) - CLI Entry Point + 데모 시나리오
+  - [protocol.py](chapter_11/protocol.py) - A2A 영감: Message, Part, AgentCard, AgentRole 정의
+  - [base_agent.py](chapter_11/base_agent.py) - BaseAgent ABC (추상 기반 클래스)
+  - [context_manager.py](chapter_11/context_manager.py) - ContextManager (.md 파일 I/O + 요약)
+  - [orchestrator.py](chapter_11/orchestrator.py) - DebateOrchestrator (State Machine)
+  - [agent_judge.py](chapter_11/agent_judge.py) - JudgeAgent (토론 조율, 평가, 최종 판정)
+  - [agent_debater.py](chapter_11/agent_debater.py) - DebaterAgent (주장 전개, web_search)
+  - [factory.py](chapter_11/factory.py) - 에이전트/오케스트레이터 팩토리 함수
+- **학습 목표**:
+  - **클래스 기반 아키텍처**: 확장 가능한 에이전트 구조 설계
+  - **A2A 프로토콜 영감**: Message, Part, AgentCard 등 표준화된 통신 구조
+  - **State Machine 기반 오케스트레이션**: 명확한 상태 전이로 토론 흐름 제어
+  - **파일 기반 메모리**: .md 파일로 실시간 개발자 가시성 제공
+  - **자유 형식 토론**: 발언 신청 → 판사 선택 → 종료 결정 패턴
+  - **자동 요약**: 10,000자 초과 시 이전 발언 LLM 요약
+- **에이전트 구성**:
+  - Judge (판사/Supervisor): 토론 조율, 발언자 선택, 평가, 최종 판정
+  - Debater PRO: 찬성 입장 옹호 (web_search로 근거 수집)
+  - Debater CON: 반대 입장 옹호 (web_search로 근거 수집)
+- **워크플로우**:
+  ```
+  INITIALIZATION → OPENING_STATEMENTS → FREE_DEBATE ⇄ JUDGE_EVALUATION
+                                                    ↓
+                        ENDED ← JUDGMENT ← CLOSING_STATEMENTS
+  ```
+- **A2A에서 가져온 핵심 개념**:
+  - **AgentCard**: 에이전트 자기소개 (name, description)
+  - **Message**: 에이전트 간 통신 단위 (role, parts, messageId)
+  - **Part**: 메시지 내용 유형 (TextPart, DataPart)
+  - **AgentRole**: 에이전트 역할 구분 (JUDGE, DEBATER_PRO, DEBATER_CON)
+- **핵심 설계 결정**:
+  - **발언 순서**: 자유 신청 → 판사 선택 (균형 고려)
+  - **Tool 범위**: Debater만 web_search (판사는 토론 내용으로만 판단)
+  - **max_rounds**: 무제한 (판사가 충분하다고 판단할 때까지)
+  - **메모리**: .md 파일로 실시간 저장 (개발자 가시성)
+- **데모 주제**: "완전 원격 근무가 사무실 근무보다 생산적인가?"
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -434,6 +490,15 @@ pip install playwright && playwright install chromium
 python chapter_10/main.py              # Supervisor 패턴 멀티 에이전트 (범용 웹앱 자동 생성)
 # 결과물 확인
 open chapter_10/output/app.html        # 생성된 웹앱 실행
+
+# Chapter 11: Agentic Debate System (에이전틱 토론 시스템)
+# 기본 데모 (원격 근무 주제)
+python chapter_11/main.py
+# 사용자 정의 주제
+python chapter_11/main.py "AI가 인간의 일자리를 대체할 것인가?"
+# 결과물 확인
+cat chapter_11/memory/debate_history.md    # 전체 토론 기록
+cat chapter_11/output/debate_summary.md    # 최종 판정 요약
 ```
 
 ### 환경 변수 설정
