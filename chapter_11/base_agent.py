@@ -21,7 +21,7 @@ class BaseAgent(ABC):
     Attributes:
         client: OpenAI 클라이언트
         role: 에이전트 역할
-        agent_card: A2A 영감의 자기소개 카드
+        agent_card: 에이전트의 자기소개 카드
         context_manager: 컨텍스트 관리자 (파일 I/O)
         system_prompt: 시스템 프롬프트
     """
