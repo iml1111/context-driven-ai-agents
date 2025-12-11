@@ -140,6 +140,19 @@ context-driven-ai-agents/
 │   │   └── debater_con_context.md  # CON 전략 메모
 │   └── output/
 │       └── debate_summary.md   # 최종 판정 결과
+├── chapter_12/
+│   ├── app.py                  # FastAPI 서버 (동기/비동기 감정 분석 API)
+│   ├── worker.py               # SQS Consumer (작업 처리 워커)
+│   ├── config.py               # 환경 설정 (pydantic-settings)
+│   ├── models.py               # Pydantic 모델 + MongoDB 스키마
+│   ├── database.py             # MongoDB CRUD (pymongo 동기 클라이언트)
+│   ├── queue_client.py         # AWS SQS 클라이언트 (boto3)
+│   ├── llm_client.py           # OpenAI 클라이언트 (Rate Limit, Retry)
+│   ├── requirements.txt        # 의존성
+│   ├── Dockerfile              # API 서버용 Docker 이미지
+│   ├── Dockerfile.worker       # Worker용 Docker 이미지
+│   ├── docker-compose.yml      # 전체 스택 오케스트레이션
+│   └── README.md               # 실행 가이드
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -427,6 +440,42 @@ context-driven-ai-agents/
   - **메모리**: .md 파일로 실시간 저장 (개발자 가시성)
 - **데모 주제**: "완전 원격 근무가 사무실 근무보다 생산적인가?"
 
+#### Chapter 12: Production Backend Engineering for AI Agents
+- **주제**: AI Agent 시스템을 위한 프로덕션급 백엔드 인프라 구축
+- **파일**:
+  - [app.py](chapter_12/app.py) - FastAPI 서버 (동기/비동기 감정 분석 API)
+  - [worker.py](chapter_12/worker.py) - SQS Consumer (작업 처리 워커)
+  - [config.py](chapter_12/config.py) - 환경 설정 (pydantic-settings)
+  - [models.py](chapter_12/models.py) - Pydantic 모델 + MongoDB 스키마
+  - [database.py](chapter_12/database.py) - MongoDB CRUD (pymongo 동기 클라이언트)
+  - [queue_client.py](chapter_12/queue_client.py) - AWS SQS 클라이언트 (boto3)
+  - [llm_client.py](chapter_12/llm_client.py) - OpenAI 클라이언트 (Rate Limit, Retry)
+  - Dockerfile, Dockerfile.worker, docker-compose.yml - Docker 컨테이너화
+- **학습 목표**:
+  - **FastAPI API 서버**: 동기/비동기 엔드포인트 패턴 비교
+  - **AWS SQS 기반 작업 큐**: 실제 AWS 서비스와 연동한 메시지 큐 구현
+  - **MongoDB 작업 상태 관리**: Job 상태 추적 (PENDING → PROCESSING → COMPLETED/FAILED)
+  - **Docker 컨테이너화**: 멀티 서비스 오케스트레이션 (API + Worker + MongoDB)
+  - **프로덕션 패턴**: Rate Limiting, Exponential Backoff, Graceful Shutdown
+- **아키텍처**:
+  ```
+  Client → FastAPI (app.py) → AWS SQS → Worker (worker.py) → MongoDB
+                ↓                              ↓
+          동기 API (즉시 응답)           비동기 처리 (Job 생성 → 폴링)
+  ```
+- **API 엔드포인트**:
+  - `GET /health`: 헬스체크
+  - `POST /api/v1/sentiment/sync`: 동기 감정 분석 (즉시 응답)
+  - `POST /api/v1/sentiment/async`: 비동기 감정 분석 (Job ID 반환)
+  - `GET /api/v1/jobs/{job_id}`: 작업 상태 조회 (폴링용)
+- **핵심 설계 결정**:
+  - **LLM Task**: 감정 분석 (Sentiment Analysis) - 단일 LLM 호출
+  - **Rate Limit 처리**: Exponential Backoff (1s → 2s → 4s), 최대 3회 재시도
+  - **SQS 설정**: Visibility Timeout, Long Polling은 큐 기본 설정 사용
+  - **Graceful Shutdown**: SIGINT/SIGTERM 처리로 안전한 종료
+  - **간결한 코드**: pymongo만 사용 (motor 비동기 제거), datetime 필드 제거
+- **의존성**: `pip install fastapi uvicorn pymongo boto3 openai pydantic-settings`
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -499,6 +548,35 @@ python chapter_11/main.py "AI가 인간의 일자리를 대체할 것인가?"
 # 결과물 확인
 cat chapter_11/memory/debate_history.md    # 전체 토론 기록
 cat chapter_11/output/debate_summary.md    # 최종 판정 요약
+
+# Chapter 12: Production Backend Engineering for AI Agents
+# Docker Compose로 전체 스택 실행
+cd chapter_12
+docker-compose up -d --build
+
+# API 테스트 (동기 감정 분석)
+curl -X POST http://localhost:8000/api/v1/sentiment/sync \
+  -H "Content-Type: application/json" \
+  -d '{"text": "이 제품 정말 최고예요!"}'
+
+# API 테스트 (비동기 감정 분석)
+curl -X POST http://localhost:8000/api/v1/sentiment/async \
+  -H "Content-Type: application/json" \
+  -d '{"text": "서비스가 너무 느리고 불친절해서 실망했습니다."}'
+
+# 작업 상태 조회
+curl http://localhost:8000/api/v1/jobs/{job_id}
+
+# 로컬 개발 모드 (터미널 2개 필요)
+# 터미널 1: MongoDB 실행
+docker run -d --name mongodb -p 27017:27017 mongo:latest
+# 터미널 2: API 서버 실행
+python chapter_12/app.py
+# 터미널 3: Worker 실행
+python chapter_12/worker.py
+
+# 정리
+docker-compose down -v
 ```
 
 ### 환경 변수 설정
@@ -507,6 +585,12 @@ cat chapter_11/output/debate_summary.md    # 최종 판정 요약
 OPENAI_API_KEY=your_openai_api_key_here
 KAKAO_REST_API_KEY=your_kakao_api_key_here  # Chapter 7-2 회식 코스 플래너용
 MONGODB_URI=mongodb+srv://...  # Chapter 8-1 RAG Pipeline용
+
+# Chapter 12: Production Backend Engineering
+AWS_ACCESS_KEY_ID=AKIA...
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+AWS_REGION=ap-northeast-2
+SQS_QUEUE_NAME=sentiment-analysis-queue
 ```
 
 ### 코드 품질 (선택사항)
