@@ -47,6 +47,8 @@ pip install -e ".[dev]"
 context-driven-ai-agents/
 ├── assets/
 │   └── sample.pdf              # 공유 리소스: PDF 샘플 파일
+├── chapter_0/
+│   └── main.py                  # Fact-Check Agent (Plan → Analysis, web_search)
 ├── chapter_1/
 │   └── main.py                  # 2단계 파이프라인 (코드 분석 → 보고서 생성)
 ├── chapter_2/
@@ -164,6 +166,18 @@ context-driven-ai-agents/
 - 다른 챕터에서 접근 시: `Path(__file__).parent.parent / "assets" / "파일명"`
 
 ### 챕터 구성
+
+#### Chapter 0: Fact-Check Agent (무료 맛보기)
+- **주제**: 특정 정보에 대해 True/False 팩트 체크를 수행하는 에이전트
+- **파일**: [main.py](chapter_0/main.py)
+- **학습 목표**:
+  - Plan → Analysis 2단계 워크플로우 이해
+  - OpenAI Responses API + web_search 도구 활용
+  - Confidence 기반 신뢰도 수치 반환
+- **워크플로우**:
+  - Plan: 팩트체크를 위한 체크리스트 생성
+  - Analysis: 체크리스트 기반 분석 (web_search 활용)
+- **출력**: verdict (TRUE/FALSE) + confidence (0~1)
 
 #### Chapter 1: 프롬프트 기반 접근의 기초
 - **주제**: 2단계 파이프라인 구조 (분석 → 포맷팅)
@@ -480,6 +494,9 @@ context-driven-ai-agents/
 
 ### 챕터별 실습 실행
 ```bash
+# Chapter 0: Fact-Check Agent (무료 맛보기)
+python chapter_0/main.py               # Plan → Analysis (web_search 활용)
+
 # Chapter 1: 프롬프트 기반 파이프라인
 python chapter_1/main.py
 
