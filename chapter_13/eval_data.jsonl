@@ -1,0 +1,6 @@
+{"claim": "대한민국의 수도는 서울이다", "ground_truth": "TRUE", "difficulty": "easy", "category": "상식"}
+{"claim": "한글은 세종대왕이 1443년에 창제했다", "ground_truth": "TRUE", "difficulty": "easy", "category": "역사"}
+{"claim": "지구는 태양계에서 세 번째로 큰 행성이다", "ground_truth": "FALSE", "difficulty": "medium", "category": "과학"}
+{"claim": "만리장성은 우주에서 육안으로 보인다", "ground_truth": "FALSE", "difficulty": "medium", "category": "상식"}
+{"claim": "비타민C를 복용하면 감기를 예방할 수 있다", "ground_truth": "PARTIALLY_TRUE", "difficulty": "hard", "category": "건강"}
+{"claim": "모차르트는 베토벤보다 더 위대한 작곡가였다", "ground_truth": "UNVERIFIABLE", "difficulty": "hard", "category": "예술"}

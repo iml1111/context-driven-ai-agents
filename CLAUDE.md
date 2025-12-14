@@ -155,6 +155,20 @@ context-driven-ai-agents/
 │   ├── Dockerfile.worker       # Worker용 Docker 이미지
 │   ├── docker-compose.yml      # 전체 스택 오케스트레이션
 │   └── README.md               # 실행 가이드
+├── chapter_13/
+│   ├── main.py                 # A/B 비교 평가 오케스트레이션
+│   ├── dataset.py              # EvalCase 데이터 모델 + 로더
+│   ├── eval_data.jsonl         # 평가 데이터셋 (6개 케이스)
+│   ├── report.py               # 평가 리포트 생성
+│   ├── fact_checkers/
+│   │   ├── __init__.py         # 팩트체커 export
+│   │   ├── v1.py               # Ver 1: Baseline (gpt-4o)
+│   │   └── v2.py               # Ver 2: Improved (gpt-5.1)
+│   └── evaluators/
+│       ├── __init__.py         # 평가기 export
+│       ├── accuracy.py         # L1: Exact Match 평가
+│       ├── llm_judge.py        # L2, L3: LLM-as-Judge (gpt-5.1)
+│       └── calibration.py      # L4: Confidence Calibration
 └── scripts/                     # 유틸리티 및 실험 스크립트
 ```
 
@@ -490,6 +504,44 @@ context-driven-ai-agents/
   - **간결한 코드**: pymongo만 사용 (motor 비동기 제거), datetime 필드 제거
 - **의존성**: `pip install fastapi uvicorn pymongo boto3 openai pydantic-settings`
 
+#### Chapter 13: Agent Workflow Evaluation Pipeline
+- **주제**: Production Ready Agent를 위한 평가 파이프라인 구축 - A/B 비교 평가
+- **파일**:
+  - [main.py](chapter_13/main.py) - A/B 비교 평가 오케스트레이션
+  - [dataset.py](chapter_13/dataset.py) - EvalCase 데이터 모델 + 로더
+  - [eval_data.jsonl](chapter_13/eval_data.jsonl) - 평가 데이터셋 (6개 케이스)
+  - [report.py](chapter_13/report.py) - 평가 리포트 생성
+  - [fact_checkers/](chapter_13/fact_checkers/) - 팩트체커 모듈
+    - v1.py - Ver 1: Baseline (gpt-4o)
+    - v2.py - Ver 2: Improved (gpt-5.1)
+  - [evaluators/](chapter_13/evaluators/) - 4계층 평가기
+    - accuracy.py - L1: Exact Match 평가
+    - llm_judge.py - L2, L3: LLM-as-Judge (gpt-5.1)
+    - calibration.py - L4: Confidence Calibration
+- **학습 목표**:
+  - **에이전트 시스템의 비결정적 특성 이해**: 동일 입력에 다른 출력 가능
+  - **다층 평가 설계**: 중간 산출물(체크리스트) + 최종 출력(verdict) 동시 평가
+  - **LLM-as-Judge 패턴**: gpt-5.1로 체크리스트 품질/근거 충분성 평가
+  - **Confidence Calibration**: ECE(Expected Calibration Error)로 신뢰도 검증
+  - **A/B 비교**: Before/After 성능 비교로 개선 효과 정량화
+- **평가 계층**:
+  - **L1 (Accuracy)**: verdict == ground_truth (Exact Match)
+  - **L2 (Checklist Quality)**: LLM-as-Judge (1-5점)
+  - **L3 (Evidence Quality)**: LLM-as-Judge (1-5점)
+  - **L4 (Calibration)**: confidence와 실제 정확도 일치도 분석
+- **A/B 비교 설계**:
+  | 구분 | Ver 1 (Baseline) | Ver 2 (Improved) |
+  |------|------------------|------------------|
+  | **모델** | gpt-4o | gpt-5.1 |
+  | **프롬프트** | chapter_0 원본 | 개선된 프롬프트 |
+  | **출력** | 텍스트 파싱 | JSON Output |
+- **Ver 2 개선 사항**:
+  - JSON Output: 프롬프트에서 JSON 형식 지정
+  - 명시적 CoT: 체크리스트 항목별 검증 근거 명시
+  - Confidence 가이드라인: 신뢰도 판단 기준 명시 (0.0~1.0)
+  - UNVERIFIABLE 인식: 검증 불가 케이스 처리 로직 강화
+- **데이터셋**: 6개 케이스 (TRUE:2, FALSE:2, PARTIALLY_TRUE:1, UNVERIFIABLE:1)
+
 ## 개발 명령어
 
 ### 챕터별 실습 실행
@@ -594,6 +646,9 @@ python chapter_12/worker.py
 
 # 정리
 docker-compose down -v
+
+# Chapter 13: Agent Workflow Evaluation Pipeline
+python chapter_13/main.py              # Ver 1 vs Ver 2 A/B 비교 평가 실행
 ```
 
 ### 환경 변수 설정
