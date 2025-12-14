@@ -1,0 +1,4 @@
+openai
+pymongo
+langchain-text-splitters
+python-dotenv
