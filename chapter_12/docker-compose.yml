@@ -1,0 +1,66 @@
+# Chapter 12: Production Backend Engineering
+# Docker Compose - Full Stack Orchestration
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:latest
+    container_name: chapter12-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - chapter12-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # FastAPI Server
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chapter12-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - chapter12-network
+    restart: unless-stopped
+
+  # SQS Worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: chapter12-worker
+    env_file:
+      - .env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - chapter12-network
+    restart: unless-stopped
+    # Graceful Shutdown을 위한 설정
+    stop_grace_period: 30s
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  chapter12-network:
+    driver: bridge
